@@ -42,7 +42,7 @@ public class slangWord {
     }
 
     public void findSlang(){
-        System.out.println("Nhap tu can tra:");
+        System.out.print("Nhap tu can tra:");
         Scanner readWord = new Scanner(System.in);
         String key = readWord.nextLine();
         if (slangWord.containsKey(key)) {
@@ -52,5 +52,18 @@ public class slangWord {
             System.out.print("Khong tim thay tu nay");
         }
         readWord.close();
+    }
+
+    public void findKeyByMean(){
+        System.out.print("Nhap tu can tra:");
+        Scanner readWord = new Scanner(System.in);
+        String definition = readWord.nextLine();
+        Boolean isExist = false;
+        System.out.println("Danh sach cac tu chua \"" + definition + "\"");
+        slangWord.forEach((key, value) -> {
+            if(value.contains(definition)) {
+                System.out.println(key + " : " + value);
+            }
+        });
     }
 }
