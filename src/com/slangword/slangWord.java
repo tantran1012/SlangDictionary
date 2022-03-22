@@ -135,6 +135,24 @@ public class slangWord {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public void addSlang() throws IOException {
+        String Word, Definition;
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Nhap tu:");
+        Word = scan.nextLine();
+        System.out.print("Nhap dinh nghia:");
+        Definition = scan.nextLine();
+        addWord(Word, Definition);
+        pushSlang(Word,Definition);
+    }
+
+    private void addWord(String word, String definition) throws IOException {
+        BufferedWriter br = new BufferedWriter(new FileWriter("slang.txt",true));
+        br.newLine();
+        String line = word + "`" + definition;
+        br.write(line);
+        br.close();
     }
 }
