@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
@@ -19,27 +20,50 @@ public class slangWord {
     public void readSlang() throws IOException {
         try {
             BufferedReader slangDic = new BufferedReader(new FileReader("slang.txt"));
-            String Line;
             while (true) {
-			    Line = slangDic.readLine();
+			    String Line = slangDic.readLine();
 			    if (Line==null)
 				    break;
             stringSolve(Line);
             }
             slangDic.close();
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
+            // Auto-generated catch block
             e.printStackTrace();
         }
     }
+
+    public void writeSlang() throws IOException {
+        try {
+            BufferedWriter slangDic = new BufferedWriter(new FileWriter("slang.txt"));
+            AtomicInteger i = new AtomicInteger();
+            int size = slangWord.size();
+            slangWord.forEach((key, value) -> {
+                String Line = key + "`" + value;
+                try {
+                    i.getAndIncrement();
+                    slangDic.write(Line);
+                    if (i.get() < size)
+                        slangDic.newLine();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            slangDic.close();
+        } catch (FileNotFoundException e) {
+            //Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
 
     private void stringSolve(String str){
         String [] result = str.split(Pattern.quote("`"));
         pushSlang(result[0], result[1]);
     }
 
-    public void getSlang(String key){
-        System.out.println(slangWord.get(key));
+    public String getSlang(String key){
+        return slangWord.get(key);
     }
 
     public void findSlang(){
@@ -47,7 +71,7 @@ public class slangWord {
         Scanner readWord = new Scanner(System.in);
         String key = readWord.nextLine();
         if (slangWord.containsKey(key)) {
-            getSlang(key);
+            System.out.println(getSlang(key));
             addToHistory(key, SlangHistory);
         }
         else{
@@ -71,6 +95,7 @@ public class slangWord {
         });
         if (!isExist.get())
             System.out.println("Khong tim thay tu nay");
+        readWord.close();
     }
 
     private void addToHistory(String Str, LinkedHashSet<String> history){
@@ -102,9 +127,13 @@ public class slangWord {
         //this function is using for saving history to file
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(type));
+            AtomicInteger i = new AtomicInteger();
+            int size = history.size();
             for (String str : history){
                 bw.write(str);
-                bw.newLine();
+                i.getAndIncrement();
+                if (i.get() < size)
+                    bw.newLine();
             }
             bw.close();
         } catch (IOException e) {
@@ -117,15 +146,14 @@ public class slangWord {
         try {
             BufferedReader SlangHis = new BufferedReader(new FileReader("SlangHistory.txt"));
             BufferedReader DefinitionHis = new BufferedReader(new FileReader("DefinitionHistory.txt"));
-            String SH, DH;
             while (true) {
-                SH = SlangHis.readLine();
+                String SH = SlangHis.readLine();
                 if (SH==null)
                     break;
                 SlangHistory.add(SH);
             }
             while (true) {
-                DH = DefinitionHis.readLine();
+                String DH = DefinitionHis.readLine();
                 if (DH==null)
                     break;
                 SlangHistory.add(DH);
@@ -146,6 +174,7 @@ public class slangWord {
         Definition = scan.nextLine();
         addWord(Word, Definition);
         pushSlang(Word,Definition);
+        scan.close();
     }
 
     private void addWord(String word, String definition) throws IOException {
@@ -154,5 +183,30 @@ public class slangWord {
         String line = word + "`" + definition;
         br.write(line);
         br.close();
+    }
+
+    public void editSlang(){
+        System.out.print("Nhap tu can chinh sua: ");
+        Scanner scan = new Scanner(System.in);
+        String slg, definition;
+        String word = scan.nextLine();
+        if (slangWord.containsKey(word)) {
+            System.out.println(word + ": " + getSlang(word));
+            System.out.print("Nhap noi dung slang muon sua:");
+            slg = scan.nextLine();
+            System.out.print("Nhap noi dung dinh nghia muon sua:");
+            definition = scan.nextLine();
+            slangWord.remove(word);
+            slangWord.put(slg,definition);
+        }
+        else {
+            System.out.println("Khong co tu nay trong tu dien");
+        }
+        scan.close();
+        try {
+            writeSlang();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
