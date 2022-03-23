@@ -2,6 +2,7 @@ package com.slangword;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -9,9 +10,13 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
 public class slangWord {
-    private final HashMap<String, String> slangWord = new HashMap<>();
+    private final LinkedHashMap<String, String> slangWord = new LinkedHashMap<>();
     private final LinkedHashSet<String> SlangHistory = new LinkedHashSet<>();
     private final LinkedHashSet<String> DefinitionHistory = new LinkedHashSet<>();
+
+    public LinkedHashMap<String, String> getSlangWord() {
+        return slangWord;
+    }
 
     private void pushSlang(String Key, String Mean){
         slangWord.put(Key, Mean);
