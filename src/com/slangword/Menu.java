@@ -1,25 +1,29 @@
 package com.slangword;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.LinkedHashMap;
+import java.util.Locale;
+import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
 public class Menu extends JFrame{
     private JPanel contentPane;
     private JTextField searchTextField;
-    private JButton searchButton;
     private JButton historyButton;
     private JButton addWordButton;
     private JButton editButton;
     private JButton deleteButton;
     private JButton exitButton;
     private JList<String> listWord;
-    private JTextField definition;
+    private JTextArea definition;
+    private JLabel search;
 
     public Menu(){
         setContentPane(contentPane);
@@ -35,19 +39,26 @@ public class Menu extends JFrame{
 
         LinkedHashMap<String, String> data = Dictionary.getSlangWord();
         String [] listKey = new String[data.size()];
-        String [] listValue = new String[data.size()];
         AtomicInteger i = new AtomicInteger();
         data.forEach((key, value) -> {
             listKey[i.get()] = key;
-            listValue[i.get()]= value;
             i.getAndIncrement();
         });
         listWord.setListData(listKey);
+        searchTextField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                onSearch(Dictionary, searchTextField.getText(), listKey);
+            }
 
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                onSearch(Dictionary, searchTextField.getText(), listKey);
+            }
 
-        searchButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onSearch();
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                onSearch(Dictionary, searchTextField.getText(), listKey);
             }
         });
 
@@ -78,7 +89,7 @@ public class Menu extends JFrame{
         listWord.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                onSelectWord(listValue[listWord.getSelectedIndex()]);
+                onSelectWord(Dictionary.getSlang(listWord.getSelectedValue()));
             }
         });
 
@@ -97,8 +108,24 @@ public class Menu extends JFrame{
     private void onEdit(){
 
     }
-    private void onSearch(){
-
+    private void onSearch(slangWord Dic, String text, String[] Default){
+        Vector<String> listW = new Vector<>();
+        if (Dic.getSlangWord().containsKey(text)) {
+            listW.add(text);
+        }
+        else {
+            AtomicInteger i = new AtomicInteger();
+            Dic.getSlangWord().forEach((key, value) -> {
+                if(value.toLowerCase().contains(text.toLowerCase())) {
+                    listW.add(key);
+                    i.getAndIncrement();
+                }
+            });
+        }
+        if(listW.isEmpty())
+            listWord.setListData(Default);
+        else
+            listWord.setListData(listW);
     }
     private void onExit(){
 

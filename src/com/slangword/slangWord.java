@@ -1,12 +1,10 @@
 package com.slangword;
 
 import java.io.*;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
 public class slangWord {
@@ -64,6 +62,8 @@ public class slangWord {
 
     private void stringSolve(String str){
         String [] result = str.split(Pattern.quote("`"));
+        result[1] = result[1].replace("| ", "\n");
+        result[1] = result[1].replace("|", "\n");
         pushSlang(result[0], result[1]);
     }
 
@@ -71,37 +71,37 @@ public class slangWord {
         return slangWord.get(key);
     }
 
-    public void findSlang(){
-        System.out.print("Nhap tu can tra:");
-        Scanner readWord = new Scanner(System.in);
-        String key = readWord.nextLine();
-        if (slangWord.containsKey(key)) {
-            System.out.println(getSlang(key));
-            addToHistory(key, SlangHistory);
-        }
-        else{
-            System.out.print("Khong tim thay tu nay");
-        }
-        readWord.close();
-    }
-
-    public void findKeyByMean(){
-        System.out.print("Nhap tu can tra:");
-        Scanner readWord = new Scanner(System.in);
-        String definition = readWord.nextLine();
-        AtomicReference<Boolean> isExist = new AtomicReference<>(false);
-        System.out.println("Danh sach cac tu chua \"" + definition + "\":");
-        slangWord.forEach((key, value) -> {
-            if(value.contains(definition)) {
-                System.out.println(key + " : " + value);
-                addToHistory(definition, DefinitionHistory);
-                isExist.set(true);
-            }
-        });
-        if (!isExist.get())
-            System.out.println("Khong tim thay tu nay");
-        readWord.close();
-    }
+//    public void findSlang(){
+//        System.out.print("Nhap tu can tra:");
+//        Scanner readWord = new Scanner(System.in);
+//        String key = readWord.nextLine();
+//        if (slangWord.containsKey(key)) {
+//            System.out.println(getSlang(key));
+//            addToHistory(key, SlangHistory);
+//        }
+//        else{
+//            System.out.print("Khong tim thay tu nay");
+//        }
+//        readWord.close();
+//    }
+//
+//    public void findKeyByMean(){
+//        System.out.print("Nhap tu can tra:");
+//        Scanner readWord = new Scanner(System.in);
+//        String definition = readWord.nextLine();
+//        AtomicReference<Boolean> isExist = new AtomicReference<>(false);
+//        System.out.println("Danh sach cac tu chua \"" + definition + "\":");
+//        slangWord.forEach((key, value) -> {
+//            if(value.contains(definition)) {
+//                System.out.println(key + " : " + value);
+//                addToHistory(definition, DefinitionHistory);
+//                isExist.set(true);
+//            }
+//        });
+//        if (!isExist.get())
+//            System.out.println("Khong tim thay tu nay");
+//        readWord.close();
+//    }
 
     private void addToHistory(String Str, LinkedHashSet<String> history){
         history.add(Str);
