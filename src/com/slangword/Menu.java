@@ -8,10 +8,8 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.LinkedHashMap;
-import java.util.Locale;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.regex.Pattern;
 
 public class Menu extends JFrame{
     private JPanel contentPane;
@@ -24,6 +22,9 @@ public class Menu extends JFrame{
     private JList<String> listWord;
     private JTextArea definition;
     private JLabel search;
+    private JPanel toolsPane;
+    private JButton backButton;
+    private JPanel backPane;
 
     public Menu(){
         setContentPane(contentPane);
@@ -64,7 +65,9 @@ public class Menu extends JFrame{
 
         historyButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onHistory();
+                listWord.setListData(Dictionary.getSlangHistory());
+                toolsPane.setVisible(false);
+                backPane.setVisible(true);
             }
         });
 
@@ -85,23 +88,29 @@ public class Menu extends JFrame{
                 onExit();
             }
         });
-
         listWord.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 onSelectWord(Dictionary.getSlang(listWord.getSelectedValue()));
+                if (!searchTextField.getText().isEmpty())
+                    Dictionary.addToHistory(listWord.getSelectedValue());
             }
         });
-
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                listWord.setListData(listKey);
+                backPane.setVisible(false);
+                toolsPane.setVisible(true);
+            }
+        });
     }
+
 
     private void onSelectWord(String Definition) {
         definition.setText(Definition);
     }
 
-    private void onHistory(){
-
-    }
     private void onAddWord(){
 
     }

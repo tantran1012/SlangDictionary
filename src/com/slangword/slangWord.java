@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Scanner;
+import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
@@ -14,6 +15,10 @@ public class slangWord {
 
     public LinkedHashMap<String, String> getSlangWord() {
         return slangWord;
+    }
+
+    public Vector<String> getSlangHistory() {
+        return new Vector<>(SlangHistory);
     }
 
     private void pushSlang(String Key, String Mean){
@@ -103,8 +108,8 @@ public class slangWord {
 //        readWord.close();
 //    }
 
-    private void addToHistory(String Str, LinkedHashSet<String> history){
-        history.add(Str);
+    public void addToHistory(String Str){
+        SlangHistory.add(Str);
     }
 
     private void viewHistory(LinkedHashSet<String> history){
