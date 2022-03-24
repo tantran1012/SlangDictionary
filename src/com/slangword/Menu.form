@@ -191,7 +191,7 @@
             </constraints>
             <properties>
               <font size="20" style="1"/>
-              <text value="Lịch sử từ đã tra"/>
+              <text value="Lịch sử tìm kiếm"/>
             </properties>
           </component>
         </children>

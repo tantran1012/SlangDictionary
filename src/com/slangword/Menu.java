@@ -28,7 +28,7 @@ public class Menu extends JFrame{
 
     public Menu(){
         setContentPane(contentPane);
-        setTitle("Tra từ Lóng");
+        setTitle("Tra từ lóng");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         slangWord Dictionary = new slangWord();
@@ -38,28 +38,20 @@ public class Menu extends JFrame{
             e.printStackTrace();
         }
 
-        LinkedHashMap<String, String> data = Dictionary.getSlangWord();
-        String [] listKey = new String[data.size()];
-        AtomicInteger i = new AtomicInteger();
-        data.forEach((key, value) -> {
-            listKey[i.get()] = key;
-            i.getAndIncrement();
-        });
+        Vector<String> listKey = getList(Dictionary);
         listWord.setListData(listKey);
         searchTextField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                onSearch(Dictionary, searchTextField.getText(), listKey);
+                onSearch(Dictionary, searchTextField.getText());
             }
-
             @Override
             public void removeUpdate(DocumentEvent e) {
-                onSearch(Dictionary, searchTextField.getText(), listKey);
+                onSearch(Dictionary, searchTextField.getText());
             }
-
             @Override
             public void changedUpdate(DocumentEvent e) {
-                onSearch(Dictionary, searchTextField.getText(), listKey);
+                onSearch(Dictionary, searchTextField.getText());
             }
         });
 
@@ -73,7 +65,11 @@ public class Menu extends JFrame{
 
         addWordButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onAddWord();
+                addNewWord dialog = new addNewWord(Dictionary);
+                dialog.pack();
+                dialog.setLocationRelativeTo(definition);
+                dialog.setVisible(true);
+                listWord.setListData(getList(Dictionary));
             }
         });
 
@@ -99,7 +95,10 @@ public class Menu extends JFrame{
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                listWord.setListData(listKey);
+                if (searchTextField.getText().isEmpty())
+                    listWord.setListData(listKey);
+                else
+                    onSearch(Dictionary, searchTextField.getText());
                 backPane.setVisible(false);
                 toolsPane.setVisible(true);
             }
@@ -107,17 +106,16 @@ public class Menu extends JFrame{
     }
 
 
+    public Vector<String> getList(slangWord Dic){
+        return new Vector<>(Dic.getSlangWord().keySet());
+    }
     private void onSelectWord(String Definition) {
         definition.setText(Definition);
-    }
-
-    private void onAddWord(){
-
     }
     private void onEdit(){
 
     }
-    private void onSearch(slangWord Dic, String text, String[] Default){
+    private void onSearch(slangWord Dic, String text){
         Vector<String> listW = new Vector<>();
         if (Dic.getSlangWord().containsKey(text)) {
             listW.add(text);
@@ -131,10 +129,7 @@ public class Menu extends JFrame{
                 }
             });
         }
-        if(listW.isEmpty())
-            listWord.setListData(Default);
-        else
-            listWord.setListData(listW);
+        listWord.setListData(listW);
     }
     private void onExit(){
 

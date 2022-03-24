@@ -6,12 +6,12 @@ import java.util.LinkedHashSet;
 import java.util.Scanner;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
 public class slangWord {
     private final LinkedHashMap<String, String> slangWord = new LinkedHashMap<>();
     private final LinkedHashSet<String> SlangHistory = new LinkedHashSet<>();
-    private final LinkedHashSet<String> DefinitionHistory = new LinkedHashSet<>();
 
     public LinkedHashMap<String, String> getSlangWord() {
         return slangWord;
@@ -112,86 +112,88 @@ public class slangWord {
         SlangHistory.add(Str);
     }
 
-    private void viewHistory(LinkedHashSet<String> history){
-        System.out.println("Cac tu da tra:");
-        for (String word : history) {
-            System.out.println(word);
-        }
-    }
+//    private void viewHistory(LinkedHashSet<String> history){
+//        System.out.println("Cac tu da tra:");
+//        for (String word : history) {
+//            System.out.println(word);
+//        }
+//    }
+//
+//    public void chooseHistory(){
+//        System.out.println("Chon lich su tra");
+//        System.out.println("1. Lich su tra tu");
+//        System.out.println("2. Lich su tra dinh nghia");
+//        Scanner sc = new Scanner(System.in);
+//        int choose = sc.nextInt();
+//        if (choose == 1)
+//            viewHistory(SlangHistory);
+//        else if (choose == 2)
+//            viewHistory(DefinitionHistory);
+//        else
+//            System.out.println("vui long nhap dung thao tac");
+//    }
+//
+//    private void writeHistory(LinkedHashSet<String> history, String type){
+//        //this function is using for saving history to file
+//        try {
+//            BufferedWriter bw = new BufferedWriter(new FileWriter(type));
+//            AtomicInteger i = new AtomicInteger();
+//            int size = history.size();
+//            for (String str : history){
+//                bw.write(str);
+//                i.getAndIncrement();
+//                if (i.get() < size)
+//                    bw.newLine();
+//            }
+//            bw.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    private void readHistoryFromFile(){
+//        //this function is using for reading history from file
+//        try {
+//            BufferedReader SlangHis = new BufferedReader(new FileReader("SlangHistory.txt"));
+//            BufferedReader DefinitionHis = new BufferedReader(new FileReader("DefinitionHistory.txt"));
+//            while (true) {
+//                String SH = SlangHis.readLine();
+//                if (SH==null)
+//                    break;
+//                SlangHistory.add(SH);
+//            }
+//            while (true) {
+//                String DH = DefinitionHis.readLine();
+//                if (DH==null)
+//                    break;
+//                SlangHistory.add(DH);
+//            }
+//            SlangHis.close();
+//            DefinitionHis.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    public void addSlang() throws IOException {
+//        String Word, Definition;
+//        Scanner scan = new Scanner(System.in);
+//        System.out.print("Nhap tu:");
+//        Word = scan.nextLine();
+//        System.out.print("Nhap dinh nghia:");
+//        Definition = scan.nextLine();
+//        addWord(Word, Definition);
+//        pushSlang(Word,Definition);
+//        scan.close();
+//    }
 
-    public void chooseHistory(){
-        System.out.println("Chon lich su tra");
-        System.out.println("1. Lich su tra tu");
-        System.out.println("2. Lich su tra dinh nghia");
-        Scanner sc = new Scanner(System.in);
-        int choose = sc.nextInt();
-        if (choose == 1)
-            viewHistory(SlangHistory);
-        else if (choose == 2)
-            viewHistory(DefinitionHistory);
-        else
-            System.out.println("vui long nhap dung thao tac");
-    }
-
-    private void writeHistory(LinkedHashSet<String> history, String type){
-        //this function is using for saving history to file
-        try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(type));
-            AtomicInteger i = new AtomicInteger();
-            int size = history.size();
-            for (String str : history){
-                bw.write(str);
-                i.getAndIncrement();
-                if (i.get() < size)
-                    bw.newLine();
-            }
-            bw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void readHistoryFromFile(){
-        //this function is using for reading history from file
-        try {
-            BufferedReader SlangHis = new BufferedReader(new FileReader("SlangHistory.txt"));
-            BufferedReader DefinitionHis = new BufferedReader(new FileReader("DefinitionHistory.txt"));
-            while (true) {
-                String SH = SlangHis.readLine();
-                if (SH==null)
-                    break;
-                SlangHistory.add(SH);
-            }
-            while (true) {
-                String DH = DefinitionHis.readLine();
-                if (DH==null)
-                    break;
-                SlangHistory.add(DH);
-            }
-            SlangHis.close();
-            DefinitionHis.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void addSlang() throws IOException {
-        String Word, Definition;
-        Scanner scan = new Scanner(System.in);
-        System.out.print("Nhap tu:");
-        Word = scan.nextLine();
-        System.out.print("Nhap dinh nghia:");
-        Definition = scan.nextLine();
-        addWord(Word, Definition);
-        pushSlang(Word,Definition);
-        scan.close();
-    }
-
-    private void addWord(String word, String definition) throws IOException {
+    public void addWord(String word, String definition) throws IOException {
+        pushSlang(word, definition);
         BufferedWriter br = new BufferedWriter(new FileWriter("slang.txt",true));
         br.newLine();
-        String line = word + "`" + definition;
-        br.write(line);
+        AtomicReference<String> line = new AtomicReference<>(word + "`" + definition);
+        line.set(line.get().replace("\n","|"));
+        br.write(line.get());
         br.close();
     }
 
