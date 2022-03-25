@@ -5,11 +5,10 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.LinkedHashMap;
 import java.util.Vector;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Menu extends JFrame{
     private JPanel contentPane;
@@ -31,6 +30,12 @@ public class Menu extends JFrame{
         setTitle("Tra từ lóng");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
+        setDefaultLookAndFeelDecorated(true);
         slangWord Dictionary = new slangWord();
         try {
             Dictionary.readSlang();
@@ -70,12 +75,20 @@ public class Menu extends JFrame{
                 dialog.setLocationRelativeTo(definition);
                 dialog.setVisible(true);
                 listWord.setListData(getList(Dictionary));
+                editButton.setEnabled(false);
+                deleteButton.setEnabled(false);
             }
         });
 
         editButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onEdit();
+                editWord dialog = new editWord(Dictionary, listWord.getSelectedValue(), Dictionary.getSlang(listWord.getSelectedValue()));
+                dialog.pack();
+                dialog.setLocationRelativeTo(definition);
+                dialog.setVisible(true);
+                listWord.setListData(getList(Dictionary));
+                editButton.setEnabled(false);
+                deleteButton.setEnabled(false);
             }
         });
 
@@ -84,10 +97,13 @@ public class Menu extends JFrame{
                 onExit();
             }
         });
+
         listWord.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                onSelectWord(Dictionary.getSlang(listWord.getSelectedValue()));
+                definition.setText(Dictionary.getSlang(listWord.getSelectedValue()));
+                editButton.setEnabled(true);
+                deleteButton.setEnabled(true);
                 if (!searchTextField.getText().isEmpty())
                     Dictionary.addToHistory(listWord.getSelectedValue());
             }
@@ -109,26 +125,15 @@ public class Menu extends JFrame{
     public Vector<String> getList(slangWord Dic){
         return new Vector<>(Dic.getSlangWord().keySet());
     }
-    private void onSelectWord(String Definition) {
-        definition.setText(Definition);
-    }
-    private void onEdit(){
 
-    }
     private void onSearch(slangWord Dic, String text){
         Vector<String> listW = new Vector<>();
-        if (Dic.getSlangWord().containsKey(text)) {
-            listW.add(text);
-        }
-        else {
-            AtomicInteger i = new AtomicInteger();
-            Dic.getSlangWord().forEach((key, value) -> {
-                if(value.toLowerCase().contains(text.toLowerCase())) {
-                    listW.add(key);
-                    i.getAndIncrement();
-                }
-            });
-        }
+        Dic.getSlangWord().forEach((key, value) -> {
+            if(key.toLowerCase().contains(text.toLowerCase()))
+                listW.add(key);
+            else if (value.toLowerCase().contains(text.toLowerCase()))
+                listW.add(key);
+        });
         listWord.setListData(listW);
     }
     private void onExit(){
