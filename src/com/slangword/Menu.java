@@ -17,13 +17,13 @@ public class Menu extends JFrame{
     private JButton addWordButton;
     private JButton editButton;
     private JButton deleteButton;
-    private JButton exitButton;
     private JList<String> listWord;
     private JTextArea definition;
     private JLabel search;
     private JPanel toolsPane;
     private JButton backButton;
     private JPanel backPane;
+    private JButton resetButton;
 
     public Menu(){
         setContentPane(contentPane);
@@ -92,11 +92,19 @@ public class Menu extends JFrame{
             }
         });
 
-        exitButton.addActionListener(new ActionListener() {
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
-                onExit();
+                confirmDialog dialog = new confirmDialog(Dictionary, listWord.getSelectedValue(), 0);
+                dialog.pack();
+                dialog.setLocationRelativeTo(definition);
+                dialog.setVisible(true);
+                listWord.setListData(getList(Dictionary));
+                editButton.setEnabled(false);
+                deleteButton.setEnabled(false);
             }
         });
+
 
         listWord.addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -119,8 +127,19 @@ public class Menu extends JFrame{
                 toolsPane.setVisible(true);
             }
         });
+        resetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                confirmDialog dialog = new confirmDialog(Dictionary, null, 1);
+                dialog.pack();
+                dialog.setLocationRelativeTo(definition);
+                dialog.setVisible(true);
+                editButton.setEnabled(false);
+                deleteButton.setEnabled(false);
+                listWord.setListData(getList(Dictionary));
+            }
+        });
     }
-
 
     public Vector<String> getList(slangWord Dic){
         return new Vector<>(Dic.getSlangWord().keySet());
@@ -136,8 +155,4 @@ public class Menu extends JFrame{
         });
         listWord.setListData(listW);
     }
-    private void onExit(){
-
-    }
-
 }

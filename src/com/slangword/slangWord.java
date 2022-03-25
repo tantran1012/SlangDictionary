@@ -81,10 +81,10 @@ public class slangWord {
 
 
     public void addWord(String word, String definition) throws IOException {
-        pushSlang(word, definition);
+        pushSlang(word.toUpperCase(), definition);
         BufferedWriter br = new BufferedWriter(new FileWriter("slang.txt",true));
         br.newLine();
-        AtomicReference<String> line = new AtomicReference<>(word + "`" + definition);
+        AtomicReference<String> line = new AtomicReference<>(word.toUpperCase() + "`" + definition);
         line.set(line.get().replace("\n","|"));
         br.write(line.get());
         br.close();
@@ -92,11 +92,38 @@ public class slangWord {
 
     public void editSlang(String oldWord, String word, String definition){
         slangWord.remove(oldWord);
-        pushSlang(word, definition);
+        pushSlang(word.toUpperCase(), definition);
         try {
             writeSlang();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void deleteSlang(String word){
+        slangWord.remove(word);
+        try {
+            writeSlang();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void reset() throws IOException {
+        BufferedReader slangReset = new BufferedReader(new FileReader("slangReset.txt"));
+        BufferedWriter slangDic = new BufferedWriter(new FileWriter("slang.txt"));
+        String lineFirst = slangReset.readLine();
+        slangDic.write(lineFirst);
+        while (true) {
+            String line = slangReset.readLine();
+            if (line == null)
+                break;
+            slangDic.newLine();
+            slangDic.write(line);
+        }
+        slangReset.close();
+        slangDic.close();
+        slangWord.clear();
+        readSlang();
     }
 }
