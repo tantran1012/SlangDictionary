@@ -24,6 +24,8 @@ public class Menu extends JFrame{
     private JButton backButton;
     private JPanel backPane;
     private JButton resetButton;
+    private JButton randomWordButton;
+    private JPanel toolsPane2;
 
     public Menu(){
         setContentPane(contentPane);
@@ -65,6 +67,7 @@ public class Menu extends JFrame{
                 listWord.setListData(Dictionary.getSlangHistory());
                 toolsPane.setVisible(false);
                 backPane.setVisible(true);
+                toolsPane2.setVisible(false);
             }
         });
 
@@ -105,7 +108,6 @@ public class Menu extends JFrame{
             }
         });
 
-
         listWord.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -125,6 +127,7 @@ public class Menu extends JFrame{
                     onSearch(Dictionary, searchTextField.getText());
                 backPane.setVisible(false);
                 toolsPane.setVisible(true);
+                toolsPane2.setVisible(true);
             }
         });
         resetButton.addActionListener(new ActionListener() {
@@ -137,6 +140,16 @@ public class Menu extends JFrame{
                 editButton.setEnabled(false);
                 deleteButton.setEnabled(false);
                 listWord.setListData(getList(Dictionary));
+            }
+        });
+
+        randomWordButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                randomWord dialog = new randomWord(Dictionary);
+                dialog.pack();
+                dialog.setLocationRelativeTo(definition);
+                dialog.setVisible(true);
             }
         });
     }

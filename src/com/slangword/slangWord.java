@@ -3,6 +3,7 @@ package com.slangword;
 import java.io.*;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.Random;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -125,5 +126,11 @@ public class slangWord {
         slangDic.close();
         slangWord.clear();
         readSlang();
+    }
+
+    public String randomWord(){
+        Vector<String> listKey = new Vector<>(slangWord.keySet());
+        Random r = new Random();
+        return listKey.get(r.nextInt(slangWord.size()));
     }
 }

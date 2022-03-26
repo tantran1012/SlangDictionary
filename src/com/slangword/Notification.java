@@ -23,6 +23,7 @@ public class Notification extends JDialog {
         notify.add("Sửa thành công");    //3
         notify.add("Xóa thành công");    //4
         notify.add("Đã reset từ điển");  //5
+        notify.add("Đã thêm vào lịch sử");//6
 
         noTi.setText(notify.get(type));
         buttonOK.addActionListener(new ActionListener() {
