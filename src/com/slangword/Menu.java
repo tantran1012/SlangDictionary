@@ -5,6 +5,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -19,25 +20,19 @@ public class Menu extends JFrame{
     private JButton deleteButton;
     private JList<String> listWord;
     private JTextArea definition;
-    private JLabel search;
     private JPanel toolsPane;
     private JButton backButton;
     private JPanel backPane;
     private JButton resetButton;
     private JButton randomWordButton;
     private JPanel toolsPane2;
+    private JButton quiz1Button;
+    private JButton quiz2Button;
 
     public Menu(){
         setContentPane(contentPane);
-        setTitle("Tra từ lóng");
+        setTitle("Tra Slang Word");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        }
-        setDefaultLookAndFeelDecorated(true);
         slangWord Dictionary = new slangWord();
         try {
             Dictionary.readSlang();
@@ -75,11 +70,9 @@ public class Menu extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 addNewWord dialog = new addNewWord(Dictionary);
                 dialog.pack();
-                dialog.setLocationRelativeTo(definition);
+                dialog.setLocationRelativeTo(contentPane);
                 dialog.setVisible(true);
                 listWord.setListData(getList(Dictionary));
-                editButton.setEnabled(false);
-                deleteButton.setEnabled(false);
             }
         });
 
@@ -87,11 +80,9 @@ public class Menu extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 editWord dialog = new editWord(Dictionary, listWord.getSelectedValue(), Dictionary.getSlang(listWord.getSelectedValue()));
                 dialog.pack();
-                dialog.setLocationRelativeTo(definition);
+                dialog.setLocationRelativeTo(contentPane);
                 dialog.setVisible(true);
                 listWord.setListData(getList(Dictionary));
-                editButton.setEnabled(false);
-                deleteButton.setEnabled(false);
             }
         });
 
@@ -100,11 +91,9 @@ public class Menu extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 confirmDialog dialog = new confirmDialog(Dictionary, listWord.getSelectedValue(), 0);
                 dialog.pack();
-                dialog.setLocationRelativeTo(definition);
+                dialog.setLocationRelativeTo(contentPane);
                 dialog.setVisible(true);
                 listWord.setListData(getList(Dictionary));
-                editButton.setEnabled(false);
-                deleteButton.setEnabled(false);
             }
         });
 
@@ -116,8 +105,14 @@ public class Menu extends JFrame{
                 deleteButton.setEnabled(true);
                 if (!searchTextField.getText().isEmpty())
                     Dictionary.addToHistory(listWord.getSelectedValue());
+                if (listWord.getSelectedValue() == null){
+                    editButton.setEnabled(false);
+                    deleteButton.setEnabled(false);
+                }
+
             }
         });
+
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -135,7 +130,7 @@ public class Menu extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 confirmDialog dialog = new confirmDialog(Dictionary, null, 1);
                 dialog.pack();
-                dialog.setLocationRelativeTo(definition);
+                dialog.setLocationRelativeTo(contentPane);
                 dialog.setVisible(true);
                 editButton.setEnabled(false);
                 deleteButton.setEnabled(false);
@@ -148,8 +143,31 @@ public class Menu extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 randomWord dialog = new randomWord(Dictionary);
                 dialog.pack();
-                dialog.setLocationRelativeTo(definition);
+                dialog.setLocationRelativeTo(contentPane);
                 dialog.setVisible(true);
+            }
+        });
+        quiz1Button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                funQuiz quizz = new funQuiz(Dictionary, 0);
+                quizz.pack();
+                quizz.setLocationRelativeTo(contentPane);
+                quizz.setSize(new Dimension(800,380));
+                quizz.setVisible(true);
+            }
+        });
+
+        quiz2Button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                funQuiz quizz = new funQuiz(Dictionary, 1);
+                quizz.pack();
+                quizz.setLocationRelativeTo(contentPane);
+                quizz.setSize(new Dimension(800,380));
+                quizz.setVisible(true);
             }
         });
     }

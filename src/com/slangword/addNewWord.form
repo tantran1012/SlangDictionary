@@ -37,7 +37,8 @@
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="OK"/>
+                  <font size="14"/>
+                  <text value="Thêm"/>
                 </properties>
               </component>
               <component id="5723f" class="javax.swing.JButton" binding="buttonCancel">
@@ -45,7 +46,8 @@
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Cancel"/>
+                  <font size="14"/>
+                  <text value="Thoát"/>
                 </properties>
               </component>
             </children>
@@ -65,6 +67,7 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <font size="14"/>
               <labelFor value="99349"/>
               <text value="Từ"/>
             </properties>
@@ -75,13 +78,16 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <font size="14"/>
+            </properties>
           </component>
           <component id="50a90" class="javax.swing.JLabel">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <font size="14"/>
               <labelFor value="d4329"/>
               <text value="Nghĩa"/>
             </properties>
@@ -96,6 +102,7 @@
               <component id="d4329" class="javax.swing.JTextArea" binding="definitionField">
                 <constraints/>
                 <properties>
+                  <font size="14"/>
                   <lineWrap value="false"/>
                 </properties>
               </component>
