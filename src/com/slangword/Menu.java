@@ -42,6 +42,8 @@ public class Menu extends JFrame{
 
         Vector<String> listKey = getList(Dictionary);
         listWord.setListData(listKey);
+
+        //Ô tìm kiếm, kết quả sẽ thay đổi khi nhập dữ liệu vào ô tìm kiếm
         searchTextField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -57,46 +59,7 @@ public class Menu extends JFrame{
             }
         });
 
-        historyButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                listWord.setListData(Dictionary.getSlangHistory());
-                toolsPane.setVisible(false);
-                backPane.setVisible(true);
-                toolsPane2.setVisible(false);
-            }
-        });
-
-        addWordButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                addNewWord dialog = new addNewWord(Dictionary);
-                dialog.pack();
-                dialog.setLocationRelativeTo(contentPane);
-                dialog.setVisible(true);
-                listWord.setListData(getList(Dictionary));
-            }
-        });
-
-        editButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                editWord dialog = new editWord(Dictionary, listWord.getSelectedValue(), Dictionary.getSlang(listWord.getSelectedValue()));
-                dialog.pack();
-                dialog.setLocationRelativeTo(contentPane);
-                dialog.setVisible(true);
-                listWord.setListData(getList(Dictionary));
-            }
-        });
-
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                confirmDialog dialog = new confirmDialog(Dictionary, listWord.getSelectedValue(), 0);
-                dialog.pack();
-                dialog.setLocationRelativeTo(contentPane);
-                dialog.setVisible(true);
-                listWord.setListData(getList(Dictionary));
-            }
-        });
-
+        //Danh sách slang word được thêm vô list để hiển thị ra ngoài
         listWord.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -113,6 +76,52 @@ public class Menu extends JFrame{
             }
         });
 
+        ///////////////Các listener của các button///////////////////
+        //Lịch sử tìm kiếm
+        historyButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                listWord.setListData(Dictionary.getSlangHistory());
+                toolsPane.setVisible(false);
+                backPane.setVisible(true);
+                toolsPane2.setVisible(false);
+            }
+        });
+
+        //Thêm từ mới
+        addWordButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                addNewWord dialog = new addNewWord(Dictionary);
+                dialog.pack();
+                dialog.setLocationRelativeTo(contentPane);
+                dialog.setVisible(true);
+                listWord.setListData(getList(Dictionary));
+            }
+        });
+
+        //Chỉnh sửa từ được chọn
+        editButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                editWord dialog = new editWord(Dictionary, listWord.getSelectedValue(), Dictionary.getSlang(listWord.getSelectedValue()));
+                dialog.pack();
+                dialog.setLocationRelativeTo(contentPane);
+                dialog.setVisible(true);
+                listWord.setListData(getList(Dictionary));
+            }
+        });
+
+        //Xóa từ được chọn
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                confirmDialog dialog = new confirmDialog(Dictionary, listWord.getSelectedValue(), 0);
+                dialog.pack();
+                dialog.setLocationRelativeTo(contentPane);
+                dialog.setVisible(true);
+                listWord.setListData(getList(Dictionary));
+            }
+        });
+
+        //Trở về (hiển thị khi đang xem lịch sử tìm kiếm)
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -125,6 +134,8 @@ public class Menu extends JFrame{
                 toolsPane2.setVisible(true);
             }
         });
+
+        //Reset slang word
         resetButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -138,6 +149,7 @@ public class Menu extends JFrame{
             }
         });
 
+        //Random một slang word
         randomWordButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -147,6 +159,8 @@ public class Menu extends JFrame{
                 dialog.setVisible(true);
             }
         });
+
+        //Đố vui 1
         quiz1Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -159,6 +173,7 @@ public class Menu extends JFrame{
             }
         });
 
+        //Đố vui 2
         quiz2Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -172,10 +187,12 @@ public class Menu extends JFrame{
         });
     }
 
+    //Lấy danh sách các key
     public Vector<String> getList(slangWord Dic){
         return new Vector<>(Dic.getSlangWord().keySet());
     }
 
+    //Tìm kiếm
     private void onSearch(slangWord Dic, String text){
         Vector<String> listW = new Vector<>();
         Dic.getSlangWord().forEach((key, value) -> {

@@ -10,21 +10,25 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
 public class slangWord {
-    private final LinkedHashMap<String, String> slangWord = new LinkedHashMap<>();
-    private final LinkedHashSet<String> SlangHistory = new LinkedHashSet<>();
+    private final LinkedHashMap<String, String> slangWord = new LinkedHashMap<>();  //Lưu danh sách các slang Word
+    private final LinkedHashSet<String> SlangHistory = new LinkedHashSet<>(); //Lưu lịch sử tìm kiếm
 
+    //Lấy cả danh sách slang Word
     public LinkedHashMap<String, String> getSlangWord() {
         return slangWord;
     }
 
+    //lấy lịch sử tìm kiếm, kết quả xuất ra Vector<>
     public Vector<String> getSlangHistory() {
         return new Vector<>(SlangHistory);
     }
 
+    //thêm từ mới vào slang word
     private void pushSlang(String Key, String Mean){
         slangWord.put(Key, Mean);
     }
 
+    //đọc slang Word từ file
     public void readSlang() throws IOException {
         try {
             BufferedReader slangDic = new BufferedReader(new FileReader("slang.txt"));
@@ -41,6 +45,7 @@ public class slangWord {
         }
     }
 
+    //ghi slang word vào file
     public void writeSlang() throws IOException {
         try {
             BufferedWriter slangDic = new BufferedWriter(new FileWriter("slang.txt"));
@@ -65,6 +70,7 @@ public class slangWord {
         }
     }
 
+    //xử lý chuỗi khi đọc từ file
     private void stringSolve(String str){
         String [] result = str.split(Pattern.quote("`"));
         result[1] = result[1].replace("| ", "\n");
@@ -72,15 +78,18 @@ public class slangWord {
         pushSlang(result[0], result[1]);
     }
 
+    //Lấy một slang word theo key đưa vào
     public String getSlang(String key){
         return slangWord.get(key);
     }
 
+    //thêm một từ Str vào lịch sử tìm kiếm
     public void addToHistory(String Str){
         SlangHistory.add(Str);
     }
 
-
+    //Thêm từ mới vào danh sách slang word
+    //Từ mới thêm sẽ nằm ở dưới cùng
     public void addWord(String word, String definition) throws IOException {
         pushSlang(word.toUpperCase(), definition);
         BufferedWriter br = new BufferedWriter(new FileWriter("slang.txt",true));
@@ -91,6 +100,8 @@ public class slangWord {
         br.close();
     }
 
+    //Chỉnh sửa một slang word
+    //Từ vừa sửa sẽ nằm ở dưới cùng
     public void editSlang(String oldWord, String word, String definition){
         slangWord.remove(oldWord);
         pushSlang(word.toUpperCase(), definition);
@@ -101,6 +112,7 @@ public class slangWord {
         }
     }
 
+    //Xóa slang word
     public void deleteSlang(String word){
         slangWord.remove(word);
         try {
@@ -110,6 +122,7 @@ public class slangWord {
         }
     }
 
+    //reset slang word, lấy từ file slangReset.txt copy sang slang.txt
     public void reset() throws IOException {
         BufferedReader slangReset = new BufferedReader(new FileReader("slangReset.txt"));
         BufferedWriter slangDic = new BufferedWriter(new FileWriter("slang.txt"));
@@ -128,6 +141,7 @@ public class slangWord {
         readSlang();
     }
 
+    //Lấy từ ngẫu nhiên trong danh sách slang word
     public String randomWord(){
         Vector<String> listKey = new Vector<>(slangWord.keySet());
         Random r = new Random();

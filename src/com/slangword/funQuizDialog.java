@@ -40,7 +40,7 @@ public class funQuizDialog extends JDialog {
             thongBao.setText("Bạn trả lời sai rồi, tiếc thật!! đáp án là");
         }
 
-        dapAnDung.setText(trueAnswer);
+        dapAnDung.setText(trueAnswer.replace("\n", " | "));
 
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);

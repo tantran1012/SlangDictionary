@@ -57,19 +57,23 @@
         <children>
           <component id="447a0" class="javax.swing.JLabel" binding="question">
             <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <font size="13"/>
+              <horizontalAlignment value="0"/>
+              <horizontalTextPosition value="0"/>
               <text value=""/>
             </properties>
           </component>
           <component id="78578" class="javax.swing.JLabel" binding="word">
             <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <font size="14" style="1"/>
+              <horizontalAlignment value="0"/>
+              <horizontalTextPosition value="0"/>
               <text value=""/>
             </properties>
           </component>
@@ -85,7 +89,7 @@
         <children>
           <component id="d7752" class="javax.swing.JButton" binding="answerA">
             <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="2" indent="0" use-parent-layout="false">
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="6" fill="0" indent="0" use-parent-layout="false">
                 <preferred-size width="250" height="100"/>
                 <maximum-size width="250" height="100"/>
               </grid>
@@ -100,7 +104,7 @@
           </component>
           <component id="23910" class="javax.swing.JButton" binding="answerB">
             <constraints>
-              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="2" indent="0" use-parent-layout="false">
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="10" fill="0" indent="0" use-parent-layout="false">
                 <preferred-size width="250" height="100"/>
                 <maximum-size width="250" height="100"/>
               </grid>
@@ -112,7 +116,7 @@
           </component>
           <component id="624a7" class="javax.swing.JButton" binding="answerC">
             <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="2" indent="0" use-parent-layout="false">
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="5" fill="0" indent="0" use-parent-layout="false">
                 <preferred-size width="250" height="100"/>
                 <maximum-size width="250" height="100"/>
               </grid>
@@ -124,7 +128,7 @@
           </component>
           <component id="d40b9" class="javax.swing.JButton" binding="answerD">
             <constraints>
-              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="2" indent="0" use-parent-layout="false">
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false">
                 <preferred-size width="250" height="100"/>
                 <maximum-size width="250" height="100"/>
               </grid>

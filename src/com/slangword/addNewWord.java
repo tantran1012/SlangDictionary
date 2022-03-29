@@ -46,7 +46,7 @@ public class addNewWord extends JDialog {
     }
 
     private void onOK(slangWord Dictionary) {
-        // add your code here
+        // kiểm tra lỗi
         int type;
         if (wordField.getText().isEmpty())
             type = 0;

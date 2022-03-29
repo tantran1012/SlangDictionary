@@ -18,8 +18,8 @@ public class funQuiz extends JFrame{
     private JLabel countTrue;
     private JLabel countFalse;
     private JLabel question;
-    AtomicInteger demDung = new AtomicInteger();
-    AtomicInteger demSai = new AtomicInteger();
+    AtomicInteger demDung = new AtomicInteger();    //Số câu đúng
+    AtomicInteger demSai = new AtomicInteger();     //Số câu sai
     String rightWord;
     String rightAnswer;
     Vector<String> wrongAnswer = new Vector<>();
@@ -30,6 +30,7 @@ public class funQuiz extends JFrame{
         playGame(dictionary, type);
         setTitle("Đố vui");
 
+        //////////////// Các listener cho các đáp án A, B, C, D ////////////////
         answerA.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -78,6 +79,7 @@ public class funQuiz extends JFrame{
         });
     }
 
+    //Trở về màn hình ban đầu
     private void backToMain()
     {
         dispose();
@@ -87,14 +89,20 @@ public class funQuiz extends JFrame{
         showUI.setVisible(true);
     }
 
+    //đặt đáp án sai
     private void setFalse(JButton nut, Vector<String> answer, int i){   ////nut là nút =)))) tiếng việt luôn
-        String text = "<html><body style='width: 160px; text-align:center'><p>" + answer.get(i) + "</p></body></html>";
+        ///stackoverflow, wrap text
+        String text = "<html><body style='width: 160px; text-align:center'><p>"
+                + answer.get(i).replace("\n", " | ") + "</p></body></html>";
         nut.setText(text);
         nut.setActionCommand(answer.get(i));
     }
 
+    //đặt đáp án đúng
     private void setTrue(JButton nut, String answer){
-        String text = "<html><body style='width: 160px; text-align:center'><p>" + answer + "</p></body></html>";
+        ///stackoverflow, wrap text
+        String text = "<html><body style='width: 160px; text-align:center'><p>"
+                + answer.replace("\n", " | ") + "</p></body></html>";
         nut.setText(text);
         nut.setActionCommand(answer);
     }
@@ -122,7 +130,9 @@ public class funQuiz extends JFrame{
         return dialog.isContinue();
     }
 
+    //Tạo câu hỏi, bắt đầu chơi
     private void playGame(slangWord dictionary, int type){
+        //type == 0, cho từ, chọn nghĩa
         if (type == 0) {
             question.setText("Từ sau đây có nghĩa là gì?");
             rightWord = dictionary.randomWord();
@@ -142,6 +152,7 @@ public class funQuiz extends JFrame{
                 i.getAndIncrement();
             }
         }
+        //Type == 1, cho nghĩa, chọn từ
         else if(type == 1) {
             question.setText("Từ/câu sau đây viết tắt là gì?");
             rightAnswer = dictionary.randomWord();
@@ -164,12 +175,14 @@ public class funQuiz extends JFrame{
         countTrue.setText(Integer.toString(demDung.get()));
         countFalse.setText(Integer.toString(demSai.get()));
 
+        //tạo vector các button để dễ đưa vào vòng lặp.
         Vector<JButton> listAnswer = new Vector<>();
         listAnswer.add(answerA);
         listAnswer.add(answerB);
         listAnswer.add(answerC);
         listAnswer.add(answerD);
 
+        //random vị trí đáp án đúng
         Random rand = new Random();
         int exactly = rand.nextInt(4);
         AtomicInteger count = new AtomicInteger();
@@ -184,7 +197,8 @@ public class funQuiz extends JFrame{
             }
             count.getAndIncrement();
         }
-        String text = "<html><body style='width: 100%; text-align:center'><p>" + rightWord.replace("\n", " | ") + "</p></body></html>";
+        String text = "<html><body style='width: 100%; text-align:center'><p>"
+                + rightWord.replace("\n", " | ") + "</p></body></html>";
         word.setText(text);
     }
 }

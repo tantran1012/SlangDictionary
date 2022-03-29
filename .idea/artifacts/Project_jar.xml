@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="slangDic:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/slangDic_jar</output-path>
+  <artifact type="jar" name="Project:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Project_jar</output-path>
     <root id="archive" name="Project.jar">
       <element id="module-output" name="Project" />
     </root>
